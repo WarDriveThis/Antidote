@@ -1,0 +1,27 @@
+[Unit]
+Description=Antidote Privacy Obfuscation Service
+After=network.target bluetooth.target
+Wants=bluetooth.target
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/home/kali/antidote/src
+
+# Interface setup before main process starts
+# Set regulatory domain to US — enables UNII-1/3 5GHz channels on MT7610U.
+# Must run before the antidote service starts or iw will refuse 5GHz channels.
+ExecStartPre=/usr/sbin/iw reg set US
+ExecStartPre=/usr/sbin/rfkill unblock bluetooth
+ExecStartPre=/bin/sleep 2
+ExecStartPre=/usr/bin/hciconfig hci0 up
+
+ExecStart=/home/kali/antidote-env/bin/python /home/kali/antidote/src/main.py
+
+Restart=on-failure
+RestartSec=10
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target

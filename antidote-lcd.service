@@ -1,0 +1,20 @@
+[Unit]
+Description=Antidote LCD Display Service
+After=antidote.service
+Wants=antidote.service
+
+[Service]
+User=root
+Group=root
+WorkingDirectory=/home/kali/antidote/src
+ExecStart=/home/kali/antidote-env/bin/python /home/kali/antidote/src/lcd_display.py
+Restart=on-failure
+RestartSec=10
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=antidote-lcd
+Environment="HOME=/root"
+Environment="PYTHONUNBUFFERED=1"
+
+[Install]
+WantedBy=multi-user.target
