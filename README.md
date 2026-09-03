@@ -1,40 +1,33 @@
-# Antidote
-Counter Surveillance application - electronic identifier collection countermeasure
+Counter Surveillance application - electronic identifier collection and transmission device
 
-Surveillance systems are expanding their collection of electronic identifiers to map patterns of life and identify common devices at multiple locations in an effort to identify individuals by their movements rather than identifying suspects and gathering legal or warranted evidence based on probable cause. It is the author’s contention that this is a 4th Amendment issue and that public counter-measures are required to deny the violation.
+Overview
 
-Proposed approach
+Collects local, active electronic identifiers (MAC, UUID, SSID,…) and re-transmits the pool in a manner that does not interfere with legitimate communications in any way but identifies the Antidote device with those identifiers to potential surveillance collection units nearby resulting in obfuscation of the movements of the devices with the collected identifiers. Operation generates data within the surveillance back-end system that render the data less usable for searches violating the 4th amendment. Active privacy protection for the surrounding environment (with volume).
+More non-technical application description is available in README-MORE.md
 
-Flood the zone – Make Surveillance system’s strengths their weakness by using their broad surveillance collection intake points to make the entire resulting data set less reliable. 
+Hardware Options
 
-Consider, if you will, the bowler hat scene in the Thomas Crown Affair. By presenting duplicated identifiers, the surveillance system’s utility is manipulated and breaks down.
-If a device is identified in 10 places at the same time, it would call into question the utility and results across the entire system. 
+RaspPi Zero; USB Hat; 2x Panda PAU0A; Laird nRF52840; Seeed ESP32-S3; Buzzer; NeoPixel; external 2.4 antenna; full 3 watt power supply
 
-**So what if you took that a step further and built something that displayed a series of legitimate, locally active electronic device identifiers, every second, in front of collection sites all across an area?**
+Currently built for Raspberry PI Zero 2 W  with compatible connected additional radios. Note that the current implementation is a bit over-kill for the purposes of functional demonstration and uses several radios each dedicated to a single identifier and a single in or out transmission mode. 2@ Panda PAU0A and 1@ Laird 451-0004 nRF52840 are surely more expensive than required, but provided the necessary capability for the PoC. The entire BLE capability can be run on a single Seeed without the Rasp Pi, but operation with the Pi allows more broad collection and adds wifi and other identifier collection and transmission.
+Hardware, OS and software choices have been made to assure access to the lower level capabilities to practically transmit varying identifiers. Note that the design attempts to remain true to the intent of BLE and WiFi privacy features and standards, it simply uses those same rolling and change-capable features to become a dynamic source of identifier data in the spirit of privacy that was intentionally built into the standards themselves.
 
-**Meet Antidote – Simple Counter-Electronic-Surveillance-data technology.**
+Quick Start
 
-Rationale - 
+Documentation contains all information required to build and flash the device. Fully operational as developed. Built as an Open Source proof of concept using Claude. Claude now declines to participate in further development, so users are welcomed to modify and advance the code and deployment platform as they like.
+All configuration flags available through included on-board user interface. Initial setup using the UI is required to activate outbound transmission, but once set, the system will return to that user configured mode on restart. 
 
-Law Enforcement will not differentiate on their own between searches for specific suspects and 4th amendment violation dragnet searches until the later is made difficult. 
+Features
 
-Approach - 
+Reads nearby electronic device identifiers
+Stores acquired identifiers in a local pool
+Randomly adjusts the perceived Antidote device identity to that of the pool identifier and retransmits for the retention period and duration configured on the user interface. 
+User configurable capabilities and monitoring options, but can operate without user intervention once configured.
+Typical use is simply to install and allow the device to collect legitimate, locally active reads, then allow those strings to be read at additional times and locations effectively blurring the data and denying the data user the ability to reliably perform broad or associative searches since many reads will appear in places the legitimate device was not.
+Neopixel shows inhale and exhale activity as well as status of identifier transmission between the Pi and Seeed components.
 
-There is a practical method to influence the data such that legitimate, warranted searches for specific plates or suspects are unimpeded, while disabling searches seeking to identify life patterns, searches attempting to determine associations and searches broadly targeting all identifiers (plates or surveillance targets) at multiple locations/times. The goal is to complicate searches, for example, for individuals involved in multiple protests. All you have to do is feed them data that blurs their results.
-
-Practical demonstration -
-
-Two applications have been released today as open-source projects that implement this method. 
-They have been developed using Claude, though Claude now declines to work on them any  further, sighting Sonnet 5 guard-rails. These are intended to be proofs-of-concept, though they are both fully functional. It is the author’s hope that the public anti-surveillance movement will embrace and refine them. Hopefully the broad group can find ways to simplify the implementations and reduce the cost of building functional units.
-Both applications are believed by the author to be legal to develop and to operate. They are both based on technical precedents including the BLE standard privacy recommendations, built-in capabilities for MAC rolling, as well as electronic license plate legality and legal precedent for freedom of speech on vehicle displays.
-The basic concept uses mass surveillance reliance on collecting identifiers (license plates, MAC addresses, SSIDs, UUIDs etc.) using their own hardware and methods and pooling those with date, time and location. The method simply feeds additional, plausible data into those channels.
-By collecting and repeating, or repeatedly rebroadcasting, the identifier components of communications in a manner matching the most likely captured segments, without interfering with normal communications, collectors can be fed the identifiers of legitimate, locally recent devices over an artificial period. Over time, this generates a data blur that robs the data set of the ability to accurately coordinate mass data search. A law enforcement officer with a legitimate need to identify reads of a specific device would then need to acquire a warrant to appropriately locate the device. It is worth noting that random data would not be effective in generating this blur. To be effective, the system must actively collect identifiers and repeat their collection in different locations and times.
-The applications
-
-**CALiPeR** – a counter-ALPR application and hardware set consisting of a camera; Raspberry PI 4 B; e-Paper display; 850 Nanometer LED Strip; 850 Nanometer transparent, visible light blocking plastic cover for the display. The resulting system reads surrounding license plate text, stores them in a local cache, or pool, for configurable duration, and plays those plates back 1 per second on the e-paper display. The display is not visible to human observers because of the cover which blocks visible light, but is clearly visible and readable to ALPR cameras which use infrared illumination (~720-880 nanometer). The result is a feed of data into the ALPR database that is only distinguishable from other data by human observation, resulting in the reduction in utility of the data for broad or correlative searches. The device can be constructed for ~$150 US. The highest cost component is the e-paper display. Later implementations may use recycled displays or some less expensive, but ALPR readable alternative. The system has been tested on some ALPR cameras, but not Flock since it would require access to the data back-end. The author recommends an early test and FOIA request for a sample plate to assure the readability for Flock specifically.
-
-**Antidote** – Expanding the CALiPeR concept to electronic surveillance, the system is comprised of a Raspberry Pi Zero 2 W, several Bluetooth and WiFi USB radios and a Seeed microcontroller. The microcontroller component is capable of independent operation for the BLE component (ala Colonel Panic Unified Blue) but can also act in an integrated fashion with the Raspberry Pi. In the extended version the Raspberry Pi’s dedicated Bluetooth data collection process streams data to the Seeed which handles outbound Bluetooth communications. The system performs 2 concurrent functions – Inhale - in which it gathers local electronic surveillance identifiers; and Exhale which transmits the signal components used by electronic surveillance devices for collection. The result is, again, the injection of data into the electronic surveillance collection flow that blurs or repeats data from devices that are actually no longer, or never were, in the collector’s range. The electronic surveillance system is thereby no longer able to reliably report the presence or absence of a specific device or devices at a given date, time, location rendering the collection unusable. The full spectrum device can be constructed for ~$65 US though the BLE only Seeed module can be built for less than $15. This implementation uses longer than necessary range and distinct radios for collection and transmission on each target technology, which is overkill and doubled the cost, but resulted in a very effective proof of concept. The system is designed not to jam, or in any way interfere with, ongoing legitimate electronic communications since the fragments transmitted are discarded by legitimate recipients, but are collected by electronic surveillance devices. 
-Note that the Seeed component should theoretically be compatible with the OUI-SPY Unified Blue though no attempt at that integration has been made at the time of publication.
+License
+GPLv3
 
 Again, it is the author’s hope that these concepts will be extended and simplified to allow broad deployment. The intent was to present the ideas, demonstrate the practical implementation and share the results. The code is not perfect by any means, and the implementation is relatively crude, but again, it is fully operational and deploy able as implemented. Documentation has been provided in the GitHub repository which includes construction and deployment steps. 
 
