@@ -1,4 +1,7 @@
 Counter Surveillance application - electronic identifier collection and transmission device
+<img width="1280" height="720" alt="Slide1 - Copy" src="https://github.com/user-attachments/assets/596a6918-bdca-4098-ba8b-53f488c5de55" />
+<img width="1280" height="720" alt="Slide2 - Copy" src="https://github.com/user-attachments/assets/65712d66-0e07-4604-b422-c5097b570e44" />
+<img width="1280" height="720" alt="Slide3 - Copy" src="https://github.com/user-attachments/assets/2ec921bc-cb27-4578-bdd1-6670468983c6" />
 
 Overview
 
